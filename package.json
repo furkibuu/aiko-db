@@ -1,0 +1,28 @@
+{
+  "name": "aikodb",
+  "version": "1.1.1",
+  "description": "AikoDB, JSON database module for simple and easy use, ideal for Discord bots.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "database",
+    "json",
+    "discord",
+    "discord-bot",
+    "data-storage",
+    "key-value",
+    "simple-db",
+    "nodejs",
+    "npm-package",
+    "aikodb",
+    "json-db"
+  ],
+  "author": "fu-w",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7"
+  }
+
+}
