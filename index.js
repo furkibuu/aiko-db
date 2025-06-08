@@ -1,58 +1,57 @@
 const fs = require('fs').promises;
 const path = require('path');
+
 class AikoDB {
   constructor(type = 'json', dbPath = 'aikodb.json') {
     this.type = type;
     this.dbPath = dbPath;
     this.data = {};
-    this._load();
-  }
-
-   async init() {
-
-    await this._load();
-  
-  }
-
-  async _load() {
-    try {
-      if (this.type === 'json') {
-        if (await this._fileExists(this.dbPath)) {
-          const data = await fs.readFile(this.dbPath);
-          this.data = JSON.parse(data);
-        } else {
-          await fs.writeFile(this.dbPath, JSON.stringify(this.data, null, 2));
-        }
-      }
-    } catch (error) {
-      console.error('Error loading database:', error);
-      console.error(`If you couldn't solve the error, come here https://discord.gg/AYRDhFpRXE`)
-    }
+    this._load();   
   }
 
   async _fileExists(filePath) {
     try {
       await fs.access(filePath);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
 
-  async add(key, value) {
-    this.data[key] = value;
-    await this._save();
+  async _load() {
+    try {
+      if (this.type === 'json') {
+        const exists = await this._fileExists(this.dbPath);
+        if (exists) {
+          const content = await fs.readFile(this.dbPath, 'utf-8');
+          this.data = JSON.parse(content);
+        } else {
+          await this._save();
+        }
+      }
+    } catch (err) {
+      console.error('[AikoDB] Yükleme hatası:', err);
+    }
   }
+
+  async _save() {
+    try {
+      if (this.type === 'json') {
+        await fs.writeFile(this.dbPath, JSON.stringify(this.data, null, 2));
+      }
+    } catch (err) {
+      console.error('[AikoDB] Kaydetme hatası:', err);
+    }
+  }
+
+  // Public API
 
   get(key) {
     return this.data[key];
   }
 
-  fetch(key) {
-
-return this.data[key]
-
-
+  has(key) {
+    return Object.prototype.hasOwnProperty.call(this.data, key);
   }
 
   async set(key, value) {
@@ -60,78 +59,77 @@ return this.data[key]
     await this._save();
   }
 
+  async add(key, value) {
+    return this.set(key, value);
+  }
+
   async delete(key) {
     delete this.data[key];
     await this._save();
   }
 
-  all() {
-    return this.data;
-  }
-
-  async deleteAll() {
+  async clear() {
     this.data = {};
     await this._save();
   }
 
+  all() {
+    return { ...this.data };
+  }
+
   async push(key, value) {
-    if (!this.data[key]) {
-      this.data[key] = [];
-    }
     if (!Array.isArray(this.data[key])) {
-      throw new TypeError(`Value at key '${key}' is not an array and cannot be pushed to.`);
+      this.data[key] = [];
     }
     this.data[key].push(value);
     await this._save();
   }
 
+  async removeFromArray(key, value) {
+    if (!Array.isArray(this.data[key])) return;
+    this.data[key] = this.data[key].filter((item) => item !== value);
+    await this._save();
+  }
+
+  keys() {
+    return Object.keys(this.data);
+  }
+
+  values() {
+    return Object.values(this.data);
+  }
+
+  size() {
+    return Object.keys(this.data).length;
+  }
 
   filter(callback) {
-    const result = {};
-    for (const key in this.data) {
-      if (callback(this.data[key], key)) {
-        result[key] = this.data[key];
-      }
-    }
-    return result;
+    return Object.fromEntries(
+      Object.entries(this.data).filter(([k, v]) => callback(v, k))
+    );
   }
 
-  search(key, value) {
-    const result = {};
-    for (const k in this.data) {
-      if (this.data[k][key] === value) {
-        result[k] = this.data[k];
-      }
-    }
-    return result;
+  find(key, value) {
+    return Object.fromEntries(
+      Object.entries(this.data).filter(([_, obj]) => obj?.[key] === value)
+    );
   }
 
-  sort(key, order = 'asc') {
-    const sorted = Object.entries(this.data).sort((a, b) => {
-      if (order === 'asc') {
-        return a[1][key] > b[1][key] ? 1 : -1;
-      } else {
-        return a[1][key] < b[1][key] ? 1 : -1;
-      }
+  sort(byKey, order = 'asc') {
+    const sorted = Object.entries(this.data).sort(([, a], [, b]) => {
+      if (order === 'asc') return a[byKey] > b[byKey] ? 1 : -1;
+      return a[byKey] < b[byKey] ? 1 : -1;
     });
 
-    const result = {};
-    for (const [k, v] of sorted) {
-      result[k] = v;
-    }
-    return result;
+    return Object.fromEntries(sorted);
   }
 
+  async reload() {
+    await this._load();
+  }
 
-  async _save() {
-    try {
-      if (this.type === 'json') {
-        await fs.writeFile(this.dbPath, JSON.stringify(this.data, null, 2));
-      }
-    } catch (error) {
-      console.error('Error saving data:', error);
-      console.error(`If you couldn't solve the error, come here https://discord.gg/AYRDhFpRXE`)
-    }
+  async save() {
+    await this._save();
   }
 }
 
