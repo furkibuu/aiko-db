@@ -94,7 +94,7 @@ Filters saved data within data
 
 
 # ✨ Support
-You can come to our [Discord server](https://discord.gg/AYRDhFpRXE) and get help and support on [#support](https://discord.com/channels/1017117541526667355/1253790108272820307) channel. Or if you send a friend to my [discord account](https://discord.com/users/453534543194882049), I will return as soon as possible.
+You can come to our [Discord server](https://discord.gg/KcDsa4fAmS) and get help and support on [#support](https://discord.com/channels/1372973541456089118/1372973541456089118) channel. Or if you send a friend to my [discord account](https://discord.com/users/453534543194882049), I will return as soon as possible.
 
 <p align="center"><a href="https://discord.gg/AYRDhFpRXE"><img src="https://api.weblutions.com/discord/invite/AYRDhFpRXE/"></a></p>
 
