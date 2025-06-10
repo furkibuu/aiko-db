@@ -1,12 +1,24 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { fileURLToPath } = require('url');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 class AikoDB {
   constructor(type = 'json', dbPath = 'aikodb.json') {
+    if (!['json'].includes(type)) {
+      throw new Error('[AikoDB] Geçersiz veri tabanı türü. Sadece "json" destekleniyor.');
+    }
+    if (typeof dbPath !== 'string' || !dbPath.endsWith('.json')) {
+      throw new Error('[AikoDB] Geçersiz veri tabanı yolu. JSON dosyası olmalıdır.');
+    }
+
     this.type = type;
     this.dbPath = dbPath;
     this.data = {};
     this._load();   
+    console.log(`[AikoDB] ${this.type} veri tabanı "${this.dbPath}" olarak ayarlandı.`);
   }
 
   async _fileExists(filePath) {
@@ -41,6 +53,7 @@ class AikoDB {
       }
     } catch (err) {
       console.error('[AikoDB] Kaydetme hatası:', err);
+
     }
   }
 
@@ -131,6 +144,8 @@ class AikoDB {
   async save() {
     await this._save();
   }
+
+
 }
 
 module.exports = AikoDB;
