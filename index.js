@@ -1,8 +1,5 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { fileURLToPath } = require('url');
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 
 class AikoDB {
@@ -15,9 +12,10 @@ class AikoDB {
     }
 
     this.type = type;
-    this.dbPath = dbPath;
+    this.dbPath = path.resolve(dbPath);
+    this.backupPath = this.dbPath.replace('.json', '.backup.json');
     this.data = {};
-    this._load();   
+    this.ready = this._load();
     console.log(`[AikoDB] ${this.type} veri tabanı "${this.dbPath}" olarak ayarlandı.`);
   }
 
@@ -32,14 +30,11 @@ class AikoDB {
 
   async _load() {
     try {
-      if (this.type === 'json') {
-        const exists = await this._fileExists(this.dbPath);
-        if (exists) {
-          const content = await fs.readFile(this.dbPath, 'utf-8');
-          this.data = JSON.parse(content);
-        } else {
-          await this._save();
-        }
+      if (await this._fileExists(this.dbPath)) {
+        const content = await fs.readFile(this.dbPath, 'utf-8');
+        this.data = JSON.parse(content);
+      } else {
+        await this._save();
       }
     } catch (err) {
       console.error('[AikoDB] Yükleme hatası:', err);
@@ -48,12 +43,18 @@ class AikoDB {
 
   async _save() {
     try {
-      if (this.type === 'json') {
-        await fs.writeFile(this.dbPath, JSON.stringify(this.data, null, 2));
-      }
+      await this._createBackup();
+      await fs.writeFile(this.dbPath, JSON.stringify(this.data, null, 2));
     } catch (err) {
       console.error('[AikoDB] Kaydetme hatası:', err);
+    }
+  }
 
+  async _createBackup() {
+    try {
+      await fs.writeFile(this.backupPath, JSON.stringify(this.data, null, 2));
+    } catch (err) {
+      console.warn('[AikoDB] Yedek oluşturulamadı:', err.message);
     }
   }
 
@@ -68,6 +69,11 @@ class AikoDB {
   }
 
   async set(key, value) {
+    if (typeof key !== 'string') throw new Error('[AikoDB] Anahtar bir string olmalıdır.');
+    if (value === undefined || typeof value === 'function') {
+      throw new Error('[AikoDB] Geçersiz değer türü.');
+    }
+
     this.data[key] = value;
     await this._save();
   }
@@ -144,8 +150,23 @@ class AikoDB {
   async save() {
     await this._save();
   }
+    async push(key, value, allowDuplicates = true) {
+    if (typeof key !== 'string') throw new Error('[AikoDB] Anahtar bir string olmalıdır.');
 
+    if (!Array.isArray(this.data[key])) {
+      this.data[key] = [];
+    }
+
+    if (!allowDuplicates && this.data[key].includes(value)) {
+      return; 
+    }
+
+    this.data[key].push(value);
+    await this._save();
+  }
 
 }
+
+
 
 module.exports = AikoDB;
