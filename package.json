@@ -1,6 +1,6 @@
 {
   "name": "aikodb",
-  "version": "1.1.1",
+  "version": "1.1.8",
   "description": "AikoDB, JSON database module for simple and easy use, ideal for Discord bots.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,10 @@
   ],
   "author": "fu-w",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/furkibuu/aiko-db/issues"
+  },
+  "homepage": "https://github.com/furkibuu/aiko-db#readme",
   "dependencies": {
     "path": "^0.12.7"
   }
