@@ -5,9 +5,9 @@ async function main() {
 // Wait for the database to initialize
 setTimeout(async () => {
   // Add some test data
-  await db.set('user1', { name: 'Furki', age: 18 });
-  await db.set('user2', { name: 'Ufuk', age: 19 });
-  await db.set('user3', { name: 'Nazmi', age: 21 });
+  await db.set('user1', { name: 'Furki', age: 19 });
+  await db.set('user2', { name: 'Ufuk', age: 20 });
+  await db.set('user3', { name: 'Nazmi', age: 22 });
 
   // Filter data: Get users older than 20
   const olderThan20 = db.filter((value) => value.age > 20);
