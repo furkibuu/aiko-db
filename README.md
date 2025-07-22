@@ -61,8 +61,17 @@ Deletes the specified key from the database.
 ### 📄 `all()`
 Returns the entire database object.
 
-### 🔁 `push(key, value)`
-Pushes a value to an array stored under the key. Creates the array if it doesn't exist.
+### 🔁 `push(key, value, allowDuplicates = true)`
+Pushes a value to an array stored under the key.  
+Creates the array if it doesn't exist.  
+You can prevent duplicates by setting `allowDuplicates` to `false`.
+
+```js
+await db.push('logs', 'Login', false); // won't add if already exists
+```
+
+### ➖ `removeFromArray(key, value)`
+Removes the given value from the array stored under the key.
 
 ### 🧹 `clear()`
 Clears the entire database.
@@ -105,6 +114,13 @@ Reloads the data from the file.
 
 ### 💾 `save()`
 Manually saves the current state to the file.
+
+---
+
+## 📌 Latest Update (v1.1.8)
+
+- `push(key, value, allowDuplicates = true)` now supports preventing duplicate entries.
+- Stability improvements for array and object handling.
 
 ---
 
