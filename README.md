@@ -11,7 +11,131 @@
 
 Install via npm:
 
+```bash![Downloads](https://img.shields.io/npm/dt/aikodb?&style=for-the-badge)
+![DownloadPerMonth](https://img.shields.io/npm/dm/aikodb?style=for-the-badge)
+
+# AikoDB
+
+**AikoDB** is a lightweight, fast, and secure JSON-based database system.  
+Now with **AES-256 encryption** and **automatic backup recovery**!
+
+---
+
+## 📦 Installation
+
 ```bash
+npm install aikodb
+```
+
+---
+
+## 🚀 Basic Usage
+
+```js
+const AikoDB = require('aikodb');
+const db = new AikoDB('json', 'database.json', { encryptionKey: 'MySecretKey123!' });
+
+(async () => {
+  await db.set('user1', { xp: 50 });
+  console.log(db.get('user1'));
+})();
+```
+
+---
+
+## 🔐 Encryption & Backup System
+
+- **AES-256 encryption** keeps your data secure.  
+- If your JSON file becomes **corrupted or unreadable**, AikoDB will **automatically restore the latest backup**.
+
+Example:
+```js
+const db = new AikoDB('json', 'secure.json', { encryptionKey: 'superSecretKey' });
+```
+
+---
+
+## 📚 API Reference
+
+_(same as before)_
+
+---
+
+## 🆕 Latest Update (v1.2.0)
+
+- Added **AES-256 encryption** for secure data storage.  
+- Added **auto-restore** from backup if JSON file is corrupted.  
+- Minor performance optimizations.
+
+---
+
+## 🌍 Language Versions
+
+<details>
+  <summary>🇹🇷 Türkçe sürümü görmek için tıklayın</summary>
+
+# AikoDB
+
+**AikoDB**, hafif, hızlı ve güvenli bir JSON tabanlı veri tabanı sistemidir.  
+Artık **AES-256 şifreleme** ve **otomatik yedekten geri yükleme** desteği ile!
+
+---
+
+## 📦 Kurulum
+
+```bash
+npm install aikodb
+```
+
+---
+
+## 🚀 Basit Kullanım
+
+```js
+const AikoDB = require('aikodb');
+const db = new AikoDB('json', 'veritabani.json', { encryptionKey: 'BenimGizliAnahtarim' });
+
+(async () => {
+  await db.set('kullanici1', { xp: 50 });
+  console.log(db.get('kullanici1'));
+})();
+```
+
+---
+
+## 🔐 Şifreleme ve Yedekleme Sistemi
+
+- **AES-256 şifreleme** ile verileriniz güvenle saklanır.  
+- JSON dosyanız **bozulur veya okunamaz hale gelirse**, AikoDB otomatik olarak **en son yedeği geri yükler**.
+
+Örnek:
+```js
+const db = new AikoDB('json', 'guvenli.json', { encryptionKey: 'superGizliAnahtar' });
+```
+
+---
+
+## 🆕 Son Güncelleme (v1.2.0)
+
+- **AES-256 şifreleme** desteği eklendi.  
+- JSON bozulduğunda **otomatik yedek geri yükleme** sistemi aktif.  
+- Performans iyileştirmeleri yapıldı.
+
+</details>
+
+---
+
+## ✨ Support
+
+Need help? Join our [Discord server](https://discord.gg/KcDsa4fAmS)  
+or reach me on [Discord](https://discord.com/users/453534543194882049).
+
+<p align="center">
+  <a href="https://discord.gg/KcDsa4fAmS">
+    <img src="https://api.weblutions.com/discord/invite/KcDsa4fAmS/">
+  </a>
+</p>
+
 npm install aikodb
 ```
 
