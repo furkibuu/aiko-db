@@ -1,6 +1,6 @@
 {
   "name": "aikodb",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "AikoDB, JSON database module for simple and easy use, ideal for Discord bots.",
   "main": "index.js",
   "scripts": {

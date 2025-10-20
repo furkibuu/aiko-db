@@ -163,6 +163,7 @@ class AikoDB {
 
     this.data[key].push(value);
     await this._save();
+    
   }
 
 }

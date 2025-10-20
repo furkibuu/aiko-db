@@ -115,7 +115,7 @@ const db = new AikoDB('json', 'guvenli.json', { encryptionKey: 'superGizliAnahta
 
 ---
 
-## 🆕 Son Güncelleme (v1.2.0)
+## 🆕 Son Güncelleme (v1.1.9a)
 
 - **AES-256 şifreleme** desteği eklendi.  
 - JSON bozulduğunda **otomatik yedek geri yükleme** sistemi aktif.  
@@ -241,7 +241,7 @@ Manually saves the current state to the file.
 
 ---
 
-## 📌 Latest Update (v1.1.8)
+## 📌 Latest Update (v1.1.9)
 
 - `push(key, value, allowDuplicates = true)` now supports preventing duplicate entries.
 - Stability improvements for array and object handling.
